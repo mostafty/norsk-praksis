@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Norsk Ordstilling</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --bg: #0d0d14;
+  --surface: #16161f;
+  --surface2: #1e1e2a;
+  --border: #2a2a3a;
+  --text: #e8e6f0;
+  --muted: #7a788a;
+  --blue: #4a9eff;
+  --blue-dim: #1a3a5c;
+  --green: #4ade80;
+  --green-dim: #14532d;
+  --red: #f87171;
+  --red-dim: #4c1d1d;
+  --gold: #fbbf24;
+  --gold-dim: #451a03;
+  --purple: #c084fc;
+  --purple-dim: #2e1065;
+  --teal: #2dd4bf;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  min-height: 100vh;
+}
+
+/* NAV */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0 1.5rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-logo {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.1rem;
+  color: var(--gold);
+  margin-right: auto;
+  padding: 1rem 0;
+}
+
+.nav-btn {
+  padding: 0.7rem 1.2rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.2s;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+
+.nav-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+.nav-btn:hover { color: var(--text); }
+
+/* PAGES */
+.page { display: none; padding: 1.5rem; max-width: 780px; margin: 0 auto; }
+.page.active { display: block; }
+
+/* LESSON */
+.lesson-intro {
+  text-align: center;
+  padding: 2rem 0 1.5rem;
+}
+.lesson-intro h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2rem;
+  color: var(--gold);
+  margin-bottom: 0.4rem;
+}
+.lesson-intro p { color: var(--muted); font-size: 0.9rem; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.4rem 1.6rem;
+  margin-bottom: 1.2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  border-radius: 3px 0 0 3px;
+}
+
+.card.blue::before { background: var(--blue); }
+.card.green::before { background: var(--green); }
+.card.red::before { background: var(--red); }
+.card.gold::before { background: var(--gold); }
+.card.purple::before { background: var(--purple); }
+.card.teal::before { background: var(--teal); }
+
+.card-tag {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.blue .card-tag { background: var(--blue-dim); color: var(--blue); }
+.green .card-tag { background: var(--green-dim); color: var(--green); }
+.red .card-tag { background: var(--red-dim); color: var(--red); }
+.gold .card-tag { background: var(--gold-dim); color: var(--gold); }
+.purple .card-tag { background: var(--purple-dim); color: var(--purple); }
+.teal .card-tag { background: #0d3330; color: var(--teal); }
+
+.card h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.2rem;
+  margin-bottom: 0.6rem;
+}
+
+.formula {
+  background: var(--surface2);
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  font-family: monospace;
+  font-size: 0.88rem;
+  margin: 0.8rem 0;
+  letter-spacing: 0.3px;
+  border: 1px solid var(--border);
+}
+
+.s { color: var(--blue); font-weight: 700; }
+.v { color: var(--red); font-weight: 700; }
+.a { color: var(--green); font-weight: 700; }
+.c { color: var(--gold); font-weight: 700; }
+.o { color: var(--purple); font-weight: 700; }
+
+table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-top: 0.8rem; }
+th { text-align: left; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); padding: 0.3rem 0.5rem; border-bottom: 1px solid var(--border); }
+td { padding: 0.55rem 0.5rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+.eng { font-style: italic; color: var(--muted); font-size: 0.82rem; }
+
+mark.s { background: var(--blue-dim); color: var(--blue); border-radius: 3px; padding: 1px 4px; font-weight: 600; }
+mark.v { background: var(--red-dim); color: var(--red); border-radius: 3px; padding: 1px 4px; font-weight: 600; }
+mark.a { background: var(--green-dim); color: var(--green); border-radius: 3px; padding: 1px 4px; font-weight: 600; }
+mark.c { background: var(--gold-dim); color: var(--gold); border-radius: 3px; padding: 1px 4px; font-weight: 600; }
+
+.note { font-size: 0.8rem; color: var(--muted); margin-top: 0.8rem; font-style: italic; }
+.note strong { color: var(--gold); }
+
+.key-box {
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  border: 1px solid var(--blue);
+  border-radius: 12px;
+  padding: 1.4rem 1.6rem;
+  margin: 1.5rem 0;
+}
+.key-box h3 { font-family: 'DM Serif Display', serif; color: var(--gold); margin-bottom: 0.8rem; font-size: 1.1rem; }
+.key-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.88rem; }
+.key-col h4 { color: var(--blue); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.4rem; }
+
+/* QUIZ */
+.quiz-header {
+  text-align: center;
+  padding: 1.5rem 0 1rem;
+}
+.quiz-header h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.8rem;
+  color: var(--gold);
+}
+
+.progress-bar-wrap {
+  background: var(--surface2);
+  border-radius: 20px;
+  height: 6px;
+  margin: 1rem 0;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue), var(--purple));
+  border-radius: 20px;
+  transition: width 0.4s ease;
+}
+
+.quiz-stats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-bottom: 1.2rem;
+}
+
+.q-counter { color: var(--text); font-weight: 500; }
+.score-display { display: flex; gap: 1rem; }
+.score-correct { color: var(--green); }
+.score-wrong { color: var(--red); }
+
+.question-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.6rem;
+  margin-bottom: 1rem;
+}
+
+.q-type-badge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.8rem;
+}
+
+.q-text {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 1.2rem;
+  color: var(--text);
+}
+
+.q-text em { color: var(--gold); font-style: normal; font-weight: 500; }
+
+/* MCQ */
+.options { display: flex; flex-direction: column; gap: 0.6rem; }
+.option-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.8rem 1.1rem;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.option-btn:hover:not(:disabled) { border-color: var(--blue); background: #1a2535; }
+.option-btn.correct { background: var(--green-dim); border-color: var(--green); color: var(--green); }
+.option-btn.wrong { background: var(--red-dim); border-color: var(--red); color: var(--red); }
+.option-btn:disabled { cursor: default; }
+
+/* FILL IN BLANK */
+.blank-input {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.blank-input:focus { border-color: var(--blue); }
+.blank-input.correct { border-color: var(--green); background: var(--green-dim); }
+.blank-input.wrong { border-color: var(--red); background: var(--red-dim); }
+
+/* REARRANGE */
+.word-pool { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; min-height: 44px; }
+.word-slot { display: flex; flex-wrap: wrap; gap: 0.5rem; min-height: 44px; padding: 0.5rem; background: var(--surface2); border: 1px dashed var(--border); border-radius: 8px; margin-bottom: 0.8rem; }
+.word-chip {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  user-select: none;
+}
+.word-chip:hover { border-color: var(--blue); color: var(--blue); }
+.word-chip.placed { background: #1a2535; border-color: var(--blue); color: var(--blue); }
+.word-chip.correct-chip { background: var(--green-dim); border-color: var(--green); color: var(--green); }
+.word-chip.wrong-chip { background: var(--red-dim); border-color: var(--red); color: var(--red); }
+
+.submit-btn {
+  background: var(--blue);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.8rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  margin-top: 0.5rem;
+}
+.submit-btn:hover { opacity: 0.85; }
+.submit-btn:disabled { opacity: 0.4; cursor: default; }
+
+.next-btn {
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.75rem 1.8rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 0.5rem;
+  margin-left: 0.5rem;
+}
+.next-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+/* FEEDBACK */
+.feedback {
+  margin-top: 1rem;
+  padding: 1rem 1.2rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  display: none;
+}
+.feedback.show { display: block; }
+.feedback.correct-fb { background: var(--green-dim); border: 1px solid var(--green); }
+.feedback.wrong-fb { background: var(--red-dim); border: 1px solid var(--red); }
+.feedback strong { display: block; margin-bottom: 0.3rem; font-size: 0.95rem; }
+.feedback .correct-ans { color: var(--green); font-weight: 500; }
+
+/* LESSON REMINDER */
+.lesson-reminder {
+  margin-top: 0.8rem;
+  padding: 0.8rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.82rem;
+}
+.lesson-reminder .reminder-title {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--gold);
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+}
+.lesson-reminder .rule-text { color: var(--muted); line-height: 1.5; }
+.lesson-reminder .rule-formula { font-family: monospace; background: var(--surface2); padding: 3px 8px; border-radius: 4px; font-size: 0.82rem; margin-top: 0.3rem; display: inline-block; }
+
+/* RESULTS */
+.results-page { text-align: center; padding: 2rem 1rem; }
+.results-page h1 { font-family: 'DM Serif Display', serif; font-size: 2.5rem; color: var(--gold); margin-bottom: 0.5rem; }
+.big-score { font-size: 4rem; font-family: 'DM Serif Display', serif; margin: 1rem 0; }
+.score-breakdown { display: flex; justify-content: center; gap: 2rem; margin: 1rem 0 2rem; font-size: 0.9rem; }
+.retry-btn {
+  background: var(--gold);
+  color: var(--bg);
+  border: none;
+  border-radius: 8px;
+  padding: 0.85rem 2.5rem;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* STREAK */
+.streak {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  color: var(--gold);
+  background: var(--gold-dim);
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-left: 0.5rem;
+}
+
+.section-divider {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  margin: 1.8rem 0 1rem;
+  text-transform: uppercase;
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo">Norsk Ordstilling</div>
+  <button class="nav-btn active" onclick="showPage('lesson')">📖 Lesson</button>
+  <button class="nav-btn" onclick="showPage('quiz')">🎯 Quiz</button>
+</nav>
+
+<!-- ===== LESSON PAGE ===== -->
+<div id="lesson" class="page active">
+  <div class="lesson-intro">
+    <h1>Norwegian Word Order</h1>
+    <p>Where to place <em>ikke, ofte, alltid, aldri, gjerne, også…</em></p>
+  </div>
+
+  <!-- LEGEND -->
+  <div style="display:flex;flex-wrap:wrap;gap:0.8rem;margin-bottom:1.5rem;font-size:0.8rem;">
+    <span><span class="s">■</span> Subject (S)</span>
+    <span><span class="v">■</span> Verb (V)</span>
+    <span><span class="a">■</span> Adverb (A) — ikke, ofte…</span>
+    <span><span class="o">■</span> Object (O)</span>
+    <span><span class="c">■</span> Connector / Front element (C)</span>
+  </div>
+
+  <!-- CARD 1: MAIN CLAUSE NORMAL -->
+  <div id="rule-main" class="card blue">
+    <div class="card-tag">Main Clause — Normal</div>
+    <h2>Subject first → V2 rule</h2>
+    <p>The verb is always <strong>element 2</strong>. Adverbs like <em>ikke, ofte, alltid, aldri</em> come <strong>after</strong> the verb.</p>
+    <div class="formula">
+      <span class="s">S</span> → <span class="v">V</span> → <span class="a">A</span> → <span class="o">O</span>
+    </div>
+    <table>
+      <tr><th>Norwegian</th><th>English</th></tr>
+      <tr><td><mark class="s">Influenseren</mark> <mark class="v">poster</mark> <mark class="a">ikke alltid</mark> ekte bilder.</td><td class="eng">The influencer doesn't always post real pictures.</td></tr>
+      <tr><td><mark class="s">Hackerne</mark> <mark class="v">bruker</mark> <mark class="a">ofte</mark> falske e-poster.</td><td class="eng">The hackers often use fake emails.</td></tr>
+      <tr><td><mark class="s">Politikeren</mark> <mark class="v">svarer</mark> <mark class="a">aldri</mark> på spørsmål.</td><td class="eng">The politician never answers questions.</td></tr>
+      <tr><td><mark class="s">Appen</mark> <mark class="v">samler</mark> <mark class="a">alltid</mark> data.</td><td class="eng">The app always collects data.</td></tr>
+    </table>
+  </div>
+
+  <!-- CARD 2: MAIN CLAUSE INVERSION -->
+  <div id="rule-inversion" class="card teal">
+    <div class="card-tag">Main Clause — Inversion</div>
+    <h2>Something else first → Subject & verb flip</h2>
+    <p>When anything other than the subject starts the sentence (<em>så, da, derfor, i dag, ofte…</em>), the subject and verb invert. The adverb still comes <strong>after</strong> the verb.</p>
+    <div class="formula">
+      <span class="c">X</span> → <span class="v">V</span> → <span class="s">S</span> → <span class="a">A</span> → <span class="o">O</span>
+    </div>
+    <table>
+      <tr><th>Norwegian</th><th>English</th></tr>
+      <tr><td><mark class="c">Derfor</mark> <mark class="v">deler</mark> <mark class="s">vi</mark> <mark class="a">ikke alltid</mark> passord.</td><td class="eng">That's why we don't always share passwords.</td></tr>
+      <tr><td><mark class="c">Så</mark> <mark class="v">poster</mark> <mark class="s">hun</mark> <mark class="a">ofte</mark> reklame.</td><td class="eng">So she often posts ads.</td></tr>
+      <tr><td><mark class="c">I dag</mark> <mark class="v">jobber</mark> <mark class="s">teamet</mark> <mark class="a">ikke</mark> hjemme.</td><td class="eng">Today the team isn't working from home.</td></tr>
+      <tr><td><mark class="c">Likevel</mark> <mark class="v">vinner</mark> <mark class="s">partiet</mark> <mark class="a">nesten alltid</mark>.</td><td class="eng">Still, the party almost always wins.</td></tr>
+    </table>
+    <p class="note">⚠️ <strong>Test:</strong> Is element 1 the subject? No inversion. Is it anything else? Invert S and V.</p>
+  </div>
+
+  <!-- KEY BOX -->
+  <div class="key-box">
+    <h3>🔑 The One Rule That Changes Everything</h3>
+    <div class="key-grid">
+      <div>
+        <h4>Main clause</h4>
+        Adverb comes <strong style="color:var(--red)">after</strong> the verb<br>
+        <span style="font-family:monospace;font-size:0.85rem;color:var(--muted)">S → V → <span style="color:var(--green)">ikke</span> → O</span><br>
+        <em style="color:var(--muted);font-size:0.82rem">Vi <span style="color:var(--red)">bruker</span> <span style="color:var(--green)">ikke</span> VPN.</em>
+      </div>
+      <div>
+        <h4>Subordinate clause</h4>
+        Adverb comes <strong style="color:var(--green)">before</strong> the verb<br>
+        <span style="font-family:monospace;font-size:0.85rem;color:var(--muted)">S → <span style="color:var(--green)">ikke</span> → V → O</span><br>
+        <em style="color:var(--muted);font-size:0.82rem">…at vi <span style="color:var(--green)">ikke</span> <span style="color:var(--red)">bruker</span> VPN.</em>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMBINING ADVERBS -->
+  <div id="rule-combo" class="card gold">
+    <div class="card-tag">Combining Adverbs</div>
+    <h2>ikke + alltid / ofte / aldri / gjerne</h2>
+    <p>When combining adverbs, the order is almost always <strong>ikke + other adverb</strong>. Think: "not always" sounds right, "always not" does not.</p>
+    <div class="formula">
+      <span class="a">ikke alltid</span> · <span class="a">ikke ofte</span> · <span class="a">ikke gjerne</span> · <span class="a">ikke lenger</span>
+    </div>
+    <table>
+      <tr><th>Norwegian</th><th>English</th></tr>
+      <tr><td>Vi <mark class="v">stoler</mark> <mark class="a">ikke alltid</mark> på algoritmene.</td><td class="eng">We don't always trust the algorithms.</td></tr>
+      <tr><td>…fordi politikerne <mark class="a">ikke alltid</mark> <mark class="v">sier</mark> sannheten.</td><td class="eng">…because politicians don't always tell the truth.</td></tr>
+      <tr><td>Systemet <mark class="v">oppdateres</mark> <mark class="a">ikke lenger</mark> automatisk.</td><td class="eng">The system no longer updates automatically.</td></tr>
+      <tr><td>Hun <mark class="v">deler</mark> <mark class="a">ikke gjerne</mark> private data.</td><td class="eng">She doesn't like sharing private data.</td></tr>
+    </table>
+    <p class="note">⚠️ <strong>Exception:</strong> <em>aldri</em> (never) already contains negation — don't combine it with <em>ikke</em>.</p>
+  </div>
+
+  <!-- CARD: HVIS -->
+  <div id="rule-hvis" class="card red">
+    <div class="card-tag">Subordinate — hvis (if)</div>
+    <h2>Hvis — "if"</h2>
+    <p>No inversion inside the clause. Adverb comes <strong>before</strong> the verb.</p>
+    <div class="formula">
+      <span class="c">hvis</span> <span class="s">S</span> <span class="a">A</span> <span class="v">V</span> …, [main clause with inversion]
+    </div>
+    <table>
+      <tr><th>Norwegian</th><th>English</th></tr>
+      <tr><td><mark class="c">Hvis</mark> <mark class="s">kontoen</mark> <mark class="a">ikke</mark> <mark class="v">er</mark> sikret, <mark class="v">kan</mark> hackere komme inn.</td><td class="eng">If the account isn't secured, hackers can get in.</td></tr>
+      <tr><td><mark class="c">Hvis</mark> <mark class="s">du</mark> <mark class="a">ikke alltid</mark> <mark class="v">bruker</mark> tofaktor…</td><td class="eng">If you don't always use two-factor…</td></tr>
+      <tr><td>Kampanjen lykkes, <mark class="c">hvis</mark> <mark class="s">vi</mark> <mark class="a">ofte</mark> <mark class="v">publiserer</mark> innhold.</td><td class="eng">The campaign succeeds if we often publish content.</td></tr>
+    </table>
+    <p class="note">⚠️ When <em>hvis</em>-clause starts the sentence, the main clause gets <strong>inversion</strong>: <em>Hvis kontoen ikke er sikret, <strong>kan hackere</strong> komme inn.</em></p>
+  </div>
+
+  <!-- CARD: DA -->
+  <div id="rule-da" class="card gold">
+    <div class="card-tag">Subordinate — da (when/past)</div>
+    <h2>Da — "when" (past event)</h2>
+    <p>As a conjunction, <em>da</em> = "when" (referring to a specific past moment). Adverb before the verb inside.</p>
+    <div class="formula">
+      <span class="c">da</span> <span class="s">S</span> <span class="a">A</span> <span class="v">V</span> …
+    </div>
+    <table>
+      <tr><th>Norwegian</th><th>English</th></tr>
+      <tr><td><mark class="c">Da</mark> <mark class="s">serveren</mark> <mark class="a">ikke</mark> <mark class="v">svarte</mark>, sendte vi alarm.</td><td class="eng">When the server didn't respond, we sent an alert.</td></tr>
+      <tr><td><mark class="c">Da</mark> <mark class="s">vi</mark> <mark class="a">endelig</mark> <mark class="v">oppdaget</mark> angrepet…</td><td class="eng">When we finally discovered the attack…</td></tr>
+      <tr><td><mark class="c">Da</mark> <mark class="s">politikeren</mark> <mark class="a">ikke lenger</mark> <mark class="v">hadde</mark> støtte…</td><td class="eng">When the politician no longer had support…</td></tr>
+    </table>
+    <p class="note">⚠️ <em>Da</em> as an <strong>adverb</strong> starting a main clause = "then" → triggers inversion: <em>Da <strong>kom angrepet.</strong></em></p>
+  </div>
+
+  <!-- CARD: SELV OM -->
+  <div id="rule-selvom" class="card purple">
+    <div class="card-tag">Subordinate — selv om (even though)</div>
+    <h2>Selv om — "even though / even if"</h2>
+    <div class="formula">
+      <span class="c">selv om</span> <span class="s">S</span> <span class="a">A</span> <span class="v">V</span> …
+    </div>
+    <table>
+      <tr><th>Norwegian</th><th>English</th></tr>
+      <tr><td><mark class="c">Selv om</mark> <mark class="s">vi</mark> <mark class="a">ikke alltid</mark> <mark class="v">liker</mark> det, må vi oppdatere.</td><td class="eng">Even though we don't always like it, we must update.</td></tr>
+      <tr><td><mark class="c">Selv om</mark> <mark class="s">partiet</mark> <mark class="a">ikke</mark> <mark class="v">vinner</mark>…</td><td class="eng">Even though the party doesn't win…</td></tr>
+      <tr><td>Vi poster, <mark class="c">selv om</mark> <mark class="s">følgerne</mark> <mark class="a">ikke alltid</mark> <mark class="v">reagerer</mark>.</td><td class="eng">We post even though followers don't always react.</td></tr>
+    </table>
+  </div>
+
+  <!-- CARD: FORDI / NÅR / AT / MENS -->
+  <div id="rule-other" class="card green">
+    <div class="card-tag">Subordinate — fordi, når, at, mens, siden</div>
+    <h2>All other conjunctions — same rule</h2>
+    <p>Every subordinate conjunction follows the same pattern: adverb <strong>before</strong> the verb.</p>
+    <table>
+      <tr><th>Conjunction</th><th>Example</th><th>English</th></tr>
+      <tr><td><strong>fordi</strong> (because)</td><td><mark class="c">fordi</mark> <mark class="s">de</mark> <mark class="a">ikke</mark> <mark class="v">krypterer</mark> data</td><td class="eng">because they don't encrypt data</td></tr>
+      <tr><td><strong>når</strong> (when/whenever)</td><td><mark class="c">når</mark> <mark class="s">du</mark> <mark class="a">alltid</mark> <mark class="v">bruker</mark> VPN</td><td class="eng">when you always use VPN</td></tr>
+      <tr><td><strong>at</strong> (that)</td><td>Jeg tror <mark class="c">at</mark> <mark class="s">han</mark> <mark class="a">ikke</mark> <mark class="v">vet</mark> det</td><td class="eng">I think he doesn't know it</td></tr>
+      <tr><td><strong>mens</strong> (while)</td><td><mark class="c">mens</mark> <mark class="s">systemet</mark> <mark class="a">ikke</mark> <mark class="v">er</mark> oppe</td><td class="eng">while the system isn't up</td></tr>
+      <tr><td><strong>siden</strong> (since)</td><td><mark class="c">siden</mark> <mark class="s">vi</mark> <mark class="a">ofte</mark> <mark class="v">jobber</mark> eksternt</td><td class="eng">since we often work remotely</td></tr>
+    </table>
+  </div>
+
+  <div style="text-align:center;margin:2rem 0;">
+    <button class="retry-btn" onclick="showPage('quiz')">🎯 Go to Quiz</button>
+  </div>
+</div>
+
+<!-- ===== QUIZ PAGE ===== -->
+<div id="quiz" class="page">
+  <div class="quiz-header">
+    <h1>🎯 Quiz</h1>
+    <p style="color:var(--muted);font-size:0.88rem;">100+ questions — social media, IT, politics & cybersecurity</p>
+  </div>
+
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
+  </div>
+
+  <div class="quiz-stats">
+    <span class="q-counter" id="qCounter">Question 1 of 108</span>
+    <span class="score-display">
+      <span class="score-correct" id="scoreCorrect">✓ 0</span>
+      <span class="score-wrong" id="scoreWrong">✗ 0</span>
+    </span>
+  </div>
+
+  <div id="questionArea"></div>
+</div>
+
+<script>
+// ===== LESSON RULES REFERENCE =====
+const RULES = {
+  main: {
+    id: 'rule-main',
+    title: 'Main Clause (Normal)',
+    formula: 'S → V → ikke/ofte/alltid → O',
+    text: 'In a normal main clause, adverbs come AFTER the verb.'
+  },
+  inversion: {
+    id: 'rule-inversion',
+    title: 'Main Clause (Inversion)',
+    formula: 'X → V → S → ikke/ofte/alltid → O',
+    text: 'When something other than the subject comes first, S and V flip. Adverb still after V.'
+  },
+  combo: {
+    id: 'rule-combo',
+    title: 'Combining Adverbs',
+    formula: '"ikke alltid" ✓ — "alltid ikke" ✗',
+    text: 'ikke + alltid/ofte/gjerne/lenger — ikke always comes first.'
+  },
+  hvis: {
+    id: 'rule-hvis',
+    title: 'Hvis-clause (if)',
+    formula: 'hvis S + ikke/ofte + V …',
+    text: 'Inside a hvis-clause: no inversion, adverb comes BEFORE the verb.'
+  },
+  da: {
+    id: 'rule-da',
+    title: 'Da-clause (when)',
+    formula: 'da S + ikke/ofte + V …',
+    text: 'Inside a da-clause: adverb comes BEFORE the verb. Da as main clause adverb = "then" and triggers inversion.'
+  },
+  selvom: {
+    id: 'rule-selvom',
+    title: 'Selv om (even though)',
+    formula: 'selv om S + ikke/ofte + V …',
+    text: 'Inside a selv om-clause: adverb comes BEFORE the verb.'
+  },
+  other: {
+    id: 'rule-other',
+    title: 'All Subordinate Conjunctions',
+    formula: 'fordi/når/at/mens/siden + S + adverb + V',
+    text: 'All subordinate conjunctions: adverb BEFORE the verb.'
+  }
+};
+
+// ===== QUESTIONS BANK =====
+const QUESTIONS = [
+  // ---- MCQ ----
+  {type:'mcq', rule:'main', q:'Which sentence is correct?',
+   opts:['Influenseren poster ikke bilder.','Influenseren ikke poster bilder.','Influenseren poster bilder ikke.'],
+   ans:0, theme:'Social media'},
+
+  {type:'mcq', rule:'main', q:'Which is correct?',
+   opts:['Hackerne bruker ofte phishing.','Hackerne ofte bruker phishing.','Spesielt hackerne bruker phishing ofte.'],
+   ans:0, theme:'Cybersecurity'},
+
+  {type:'mcq', rule:'inversion', q:'You want to start the sentence with "Derfor". Which is correct?',
+   opts:['Derfor poster vi alltid oppdateringer.','Derfor vi poster alltid oppdateringer.','Derfor alltid poster vi oppdateringer.'],
+   ans:0, theme:'IT'},
+
+  {type:'mcq', rule:'hvis', q:'Choose the correct sentence:',
+   opts:['Hvis systemet ikke er oppdatert, kan det hackes.','Hvis systemet er ikke oppdatert, kan det hackes.','Hvis ikke er systemet oppdatert, kan det hackes.'],
+   ans:0, theme:'Cybersecurity'},
+
+  {type:'mcq', rule:'selvom', q:'Which sentence is correct?',
+   opts:['Selv om partiet ikke vinner, fortsetter de.','Selv om partiet vinner ikke, fortsetter de.','Selv om ikke partiet vinner, fortsetter de.'],
+   ans:0, theme:'Politics'},
+
+  {type:'mcq', rule:'other', q:'Choose the correct subordinate clause:',
+   opts:['…fordi vi ikke stoler på dataene.','…fordi vi stoler ikke på dataene.','…fordi ikke vi stoler på dataene.'],
+   ans:0, theme:'IT'},
+
+  {type:'mcq', rule:'combo', q:'Which combination is natural Norwegian?',
+   opts:['Vi stoler ikke alltid på algoritmen.','Vi stoler alltid ikke på algoritmen.','Vi alltid ikke stoler på algoritmen.'],
+   ans:0, theme:'Social media'},
+
+  {type:'mcq', rule:'da', q:'Choose the correct sentence:',
+   opts:['Da vi ikke hadde backup, mistet vi data.','Da vi hadde ikke backup, mistet vi data.','Da hadde vi ikke backup, mistet vi data.'],
+   ans:0, theme:'IT'},
+
+  {type:'mcq', rule:'inversion', q:'Start the sentence with "I dag":',
+   opts:['I dag jobber politikerne ikke hjemmefra.','I dag politikerne jobber ikke hjemmefra.','I dag ikke jobber politikerne hjemmefra.'],
+   ans:0, theme:'Politics'},
+
+  {type:'mcq', rule:'main', q:'Where does "aldri" go in: Partiet ___ ___ holder løftene?',
+   opts:['Partiet holder aldri løftene.','Partiet aldri holder løftene.','Aldri partiet holder løftene.'],
+   ans:0, theme:'Politics'},
+
+  {type:'mcq', rule:'other', q:'Choose correctly:',
+   opts:['Jeg vet at han ikke alltid svarer på meldinger.','Jeg vet at han alltid ikke svarer på meldinger.','Jeg vet at ikke han alltid svarer på meldinger.'],
+   ans:0, theme:'Social media'},
+
+  {type:'mcq', rule:'hvis', q:'The hvis-clause starts the sentence. Main clause correct?',
+   opts:['Hvis du ikke bruker VPN, er du sårbar.','Hvis du ikke bruker VPN, du er sårbar.','Hvis ikke du bruker VPN, er du sårbar.'],
+   ans:0, theme:'Cybersecurity'},
+
+  {type:'mcq', rule:'inversion', q:'Start with "Så":',
+   opts:['Så deler vi ofte strategien vår.','Så vi deler ofte strategien vår.','Så ofte deler vi strategien vår.'],
+   ans:0, theme:'Marketing'},
+
+  {type:'mcq', rule:'main', q:'Which is correct?',
+   opts:['Brannmuren oppdateres ikke automatisk.','Brannmuren ikke oppdateres automatisk.','Ikke brannmuren oppdateres automatisk.'],
+   ans:0, theme:'Cybersecurity'},
+
+  {type:'mcq', rule:'selvom', q:'Which is correct?',
+   opts:['Selv om vi ikke alltid når målgruppen, fortsetter vi.','Selv om vi alltid ikke når målgruppen, fortsetter vi.','Selv om vi ikke alltid ikke når målgruppen, fortsetter vi.'],
+   ans:0, theme:'Marketing'},
+
+  {type:'mcq', rule:'da', q:'Da as a conjunction (when) — which is correct?',
+   opts:['Da angrepet ikke ble oppdaget, spredte det seg raskt.','Da angrepet ble ikke oppdaget, spredte det seg raskt.','Da ble angrepet ikke oppdaget, spredte det seg raskt.'],
+   ans:0, theme:'Cybersecurity'},
+
+  {type:'mcq', rule:'other', q:'Choose:',
+   opts:['…mens systemet ikke er tilgjengelig…','…mens systemet er ikke tilgjengelig…','…mens ikke systemet er tilgjengelig…'],
+   ans:0, theme:'IT'},
+
+  {type:'mcq', rule:'inversion', q:'Start with "Likevel":',
+   opts:['Likevel deler mange brukere passord.','Likevel mange brukere deler passord.','Likevel deler passord mange brukere.'],
+   ans:0, theme:'Cybersecurity'},
+
+  {type:'mcq', rule:'main', q:'Choose the correct sentence:',
+   opts:['Kampanjen fungerer alltid best med video.','Kampanjen alltid fungerer best med video.','Alltid kampanjen fungerer best med video.'],
+   ans:0, theme:'Marketing'},
+
+  {type:'mcq', rule:'combo', q:'Which is correct?',
+   opts:['Han svarer ikke gjerne på kritikk.','Han svarer gjerne ikke på kritikk.','Han ikke svarer gjerne på kritikk.'],
+   ans:0, theme:'Politics'},
+
+  // ---- FILL IN THE BLANK ----
+  {type:'fill', rule:'main', q:'Fill in the blank. Put "ikke" in the right place:\n"Teamet ___ oppdaterte ___ serveren."',
+   pre:'Teamet', blank:'ikke', post:'oppdaterte serveren.',
+   sentence:'Teamet [ikke] oppdaterte serveren.',
+   ans:'ikke oppdaterte', display:'Teamet ___ serveren.',
+   hint:'ikke comes after the verb in a main clause',
+   full:'Teamet oppdaterte ikke serveren.', theme:'IT'},
+
+  {type:'fill', rule:'main', q:'Type the correct position for "alltid":\n"Vi ___ svarer ___ på kommentarer."',
+   full:'Vi svarer alltid på kommentarer.',
+   ans:'svarer alltid',
+   display:'Vi ___ på kommentarer.',
+   hint:'alltid comes after the verb',
+   theme:'Social media'},
+
+  {type:'fill', rule:'hvis', q:'"Hvis vi ___ oppdaterer ___ systemet, er det sårbart."\nPut "ikke" correctly inside the hvis-clause.',
+   full:'Hvis vi ikke oppdaterer systemet, er det sårbart.',
+   ans:'ikke oppdaterer',
+   display:'Hvis vi ___ systemet, er det sårbart.',
+   hint:'In a hvis-clause, ikke comes BEFORE the verb',
+   theme:'Cybersecurity'},
+
+  {type:'fill', rule:'other', q:'Complete: "…fordi politikerne ___ sier ___ sannheten."\nAdd "ikke alltid" correctly.',
+   full:'…fordi politikerne ikke alltid sier sannheten.',
+   ans:'ikke alltid sier',
+   display:'…fordi politikerne ___ sannheten.',
+   hint:'Subordinate clause: ikke alltid before the verb',
+   theme:'Politics'},
+
+  {type:'fill', rule:'inversion', q:'Start with "Derfor" — complete:\n"Derfor ___ vi ___ kampanjen på nytt."\nAdd "ikke" correctly.',
+   full:'Derfor starter vi ikke kampanjen på nytt.',
+   ans:'starter vi ikke',
+   display:'Derfor ___ kampanjen på nytt.',
+   hint:'After Derfor, verb comes before subject. Ikke after verb.',
+   theme:'Marketing'},
+
+  {type:'fill', rule:'selvom', q:'"Selv om influenseren ___ alltid er ___ ærlig, har hun mange følgere."\nAdd "ikke" correctly.',
+   full:'Selv om influenseren ikke alltid er ærlig, har hun mange følgere.',
+   ans:'ikke alltid er',
+   display:'Selv om influenseren ___ ærlig, har hun mange følgere.',
+   hint:'Selv om-clause: ikke alltid comes before the verb',
+   theme:'Social media'},
+
+  {type:'fill', rule:'da', q:'"Da hackerne ___ ble ___ oppdaget, var det for sent."\nAdd "ikke" correctly.',
+   full:'Da hackerne ikke ble oppdaget, var det for sent.',
+   ans:'ikke ble',
+   display:'Da hackerne ___ oppdaget, var det for sent.',
+   hint:'Da-clause (subordinate): ikke before the verb',
+   theme:'Cybersecurity'},
+
+  {type:'fill', rule:'main', q:'Add "gjerne" in the right place:\n"Markedsførere ___ deler ___ statistikk."',
+   full:'Markedsførere deler gjerne statistikk.',
+   ans:'deler gjerne',
+   display:'Markedsførere ___ statistikk.',
+   hint:'gjerne is an adverb — comes after verb in main clause',
+   theme:'Marketing'},
+
+  {type:'fill', rule:'other', q:'Complete with "ikke alltid":\n"Jeg tror at systemet ___ fungerer ___."',
+   full:'Jeg tror at systemet ikke alltid fungerer.',
+   ans:'ikke alltid fungerer',
+   display:'Jeg tror at systemet ___.',
+   hint:'At-clause (subordinate): ikke alltid before the verb',
+   theme:'IT'},
+
+  {type:'fill', rule:'inversion', q:'"Så ___ partiet ___ vunnet valget."\nAdd "har ikke" (has not) correctly with inversion.',
+   full:'Så har partiet ikke vunnet valget.',
+   ans:'har partiet ikke',
+   display:'Så ___ vunnet valget.',
+   hint:'After Så: verb first, then subject, then ikke',
+   theme:'Politics'},
+
+  // ---- REARRANGE ----
+  {type:'rearrange', rule:'main', q:'Rearrange into a correct Norwegian sentence:',
+   words:['Brukerne','ikke','deler','passord','gjerne'], ans:'Brukerne deler ikke gjerne passord', theme:'Cybersecurity'},
+
+  {type:'rearrange', rule:'inversion', q:'Rearrange — the sentence starts with "Derfor":',
+   words:['Derfor','vi','poster','alltid','oppdateringer'], ans:'Derfor poster vi alltid oppdateringer', theme:'IT'},
+
+  {type:'rearrange', rule:'hvis', q:'Rearrange this hvis-clause:',
+   words:['Hvis','ikke','du','bruker','tofaktorautentisering'], ans:'Hvis du ikke bruker tofaktorautentisering', theme:'Cybersecurity'},
+
+  {type:'rearrange', rule:'selvom', q:'Rearrange this selv om sentence:',
+   words:['Selv','om','partiet','ikke','alltid','vinner'], ans:'Selv om partiet ikke alltid vinner', theme:'Politics'},
+
+  {type:'rearrange', rule:'other', q:'Rearrange this fordi-clause:',
+   words:['fordi','de','ikke','krypterer','meldingene'], ans:'fordi de ikke krypterer meldingene', theme:'Cybersecurity'},
+
+  {type:'rearrange', rule:'da', q:'Rearrange this da-clause + main clause:',
+   words:['Da','vi','ikke','hadde','backup','mistet','vi','data'], ans:'Da vi ikke hadde backup mistet vi data', theme:'IT'},
+
+  {type:'rearrange', rule:'inversion', q:'Start with "I dag":',
+   words:['I','dag','jobber','vi','ikke','hjemmefra'], ans:'I dag jobber vi ikke hjemmefra', theme:'IT'},
+
+  {type:'rearrange', rule:'combo', q:'Rearrange:',
+   words:['Hun','svarer','ikke','alltid','på','meldinger'], ans:'Hun svarer ikke alltid på meldinger', theme:'Social media'},
+
+  {type:'rearrange', rule:'other', q:'Rearrange this når-clause:',
+   words:['når','systemet','ikke','er','oppdatert'], ans:'når systemet ikke er oppdatert', theme:'Cybersecurity'},
+
+  {type:'rearrange', rule:'main', q:'Rearrange:',
+   words:['Politikeren','svarer','aldri','på','kritikk'], ans:'Politikeren svarer aldri på kritikk', theme:'Politics'},
+
+  {type:'rearrange', rule:'inversion', q:'Start with "Likevel":',
+   words:['Likevel','stoler','mange','ikke','på','myndighetene'], ans:'Likevel stoler mange ikke på myndighetene', theme:'Politics'},
+
+  {type:'rearrange', rule:'hvis', q:'Full sentence — hvis-clause then main clause:',
+   words:['Hvis','kontoen','ikke','er','sikret','kan','hackere','logge','inn'], ans:'Hvis kontoen ikke er sikret kan hackere logge inn', theme:'Cybersecurity'},
+
+  // ---- MORE MCQ (harder) ----
+  {type:'mcq', rule:'inversion', q:'Start with "Da" (as adverb = then). Choose correct:',
+   opts:['Da kom alarmen.','Da alarmen kom.','Da ikke kom alarmen.'],
+   ans:0, theme:'Cybersecurity'},
+
+  {type:'mcq', rule:'da', q:'Da as conjunction (when) — which is correct?',
+   opts:['Da systemet ikke fungerte, ringte vi support.','Da systemet fungerte ikke, ringte vi support.','Da fungerte systemet ikke, ringte vi support.'],
+   ans:0, theme:'IT'},
+
+  {type:'mcq', rule:'other', q:'Choose:',
+   opts:['Jeg vet at partiet ikke alltid holder ord.','Jeg vet at partiet alltid ikke holder ord.','Jeg vet at ikke partiet alltid holder ord.'],
+   ans:0, theme:'Politics'},
+
+  {type:'mcq', rule:'main', q:'Which is correct?',
+   opts:['Algoritmen fungerer ikke alltid som forventet.','Algoritmen ikke fungerer alltid som forventet.','Algoritmen fungerer alltid ikke som forventet.'],
+   ans:0, theme:'IT'},
+
+  {type:'mcq', rule:'selvom', q:'Complex sentence — choose:',
+   opts:['Vi sender kampanjen, selv om vi ikke alltid når målgruppen.','Vi sender kampanjen, selv om vi alltid ikke når målgruppen.','Vi sender kampanjen, selv om ikke vi alltid når målgruppen.'],
+   ans:0, theme:'Marketing'},
+
+  {type:'mcq', rule:'inversion', q:'Start with "Ofte" — choose:',
+   opts:['Ofte deler ikke politikere nok informasjon.','Ofte ikke deler politikere nok informasjon.','Ofte deler politikere ikke nok informasjon.'],
+   ans:2, theme:'Politics'},
+
+  {type:'mcq', rule:'if', q:'Which sentence uses "hvis" correctly?',
+   opts:['De logger inn, hvis de ikke har glemt passordet.','De logger inn, hvis de har ikke glemt passordet.','De logger inn, hvis ikke de har glemt passordet.'],
+   ans:0, theme:'IT'},
+
+  {type:'mcq', rule:'combo', q:'Which is correct?',
+   opts:['Systemet er ikke lenger sikkert.','Systemet er lenger ikke sikkert.','Systemet ikke er lenger sikkert.'],
+   ans:0, theme:'Cybersecurity'},
+
+  {type:'mcq', rule:'other', q:'Choose the correct at-clause:',
+   opts:['Vi tror at kampanjen ikke alltid treffer riktig målgruppe.','Vi tror at kampanjen alltid ikke treffer riktig målgruppe.','Vi tror ikke alltid at kampanjen treffer riktig målgruppe.'],
+   ans:0, theme:'Marketing'},
+
+  {type:'mcq', rule:'main', q:'Tricky — start with the subject. Which is correct?',
+   opts:['Influenserne deler ikke alltid sponset innhold tydelig.','Influenserne ikke deler alltid sponset innhold tydelig.','Influenserne deler alltid ikke sponset innhold tydelig.'],
+   ans:0, theme:'Social media'},
+
+  // ---- MORE REARRANGES (tricky) ----
+  {type:'rearrange', rule:'inversion', q:'Start with "Så" — tricky word order:',
+   words:['Så','oppdaterte','vi','ikke','alltid','serveren'], ans:'Så oppdaterte vi ikke alltid serveren', theme:'IT'},
+
+  {type:'rearrange', rule:'other', q:'Rearrange this mens-clause:',
+   words:['mens','partiet','ikke','alltid','er','enig'], ans:'mens partiet ikke alltid er enig', theme:'Politics'},
+
+  {type:'rearrange', rule:'selvom', q:'Rearrange full sentence:',
+   words:['Selv','om','kampanjen','ikke','lenger','fungerer','fortsetter','de'], ans:'Selv om kampanjen ikke lenger fungerer fortsetter de', theme:'Marketing'},
+
+  {type:'rearrange', rule:'main', q:'Rearrange:',
+   words:['Markedsavdelingen','deler','ikke','alltid','resultatene'], ans:'Markedsavdelingen deler ikke alltid resultatene', theme:'Marketing'},
+
+  {type:'rearrange', rule:'hvis', q:'Full sentence:',
+   words:['Hvis','du','ikke','alltid','oppdaterer','programvaren','er','den','sårbar'], ans:'Hvis du ikke alltid oppdaterer programvaren er den sårbar', theme:'Cybersecurity'},
+
+  // ---- FILL MORE ----
+  {type:'fill', rule:'other', q:'Add "aldri" correctly:\n"…siden vi ___ stoler ___ på ukjente lenker."',
+   full:'…siden vi aldri stoler på ukjente lenker.',
+   ans:'aldri stoler',
+   display:'…siden vi ___ på ukjente lenker.',
+   hint:'Subordinate clause (siden): adverb before verb',
+   theme:'Cybersecurity'},
+
+  {type:'fill', rule:'inversion', q:'Start with "Likevel" — add "ikke alltid":\n"Likevel ___ vi ___ kampanjen."',
+   full:'Likevel avslutter vi ikke alltid kampanjen.',
+   ans:'avslutter vi ikke alltid',
+   display:'Likevel ___ kampanjen.',
+   hint:'After Likevel: V → S → ikke alltid',
+   theme:'Marketing'},
+
+  {type:'fill', rule:'selvom', q:'Add "ikke gjerne" correctly:\n"Selv om han ___ deler ___ private data, gjør han det."',
+   full:'Selv om han ikke gjerne deler private data, gjør han det.',
+   ans:'ikke gjerne deler',
+   display:'Selv om han ___ private data, gjør han det.',
+   hint:'Selv om-clause: ikke gjerne before the verb',
+   theme:'Social media'},
+
+  {type:'fill', rule:'main', q:'Add "ikke alltid" correctly:\n"Algoritmen ___ rangerer ___ innholdet riktig."',
+   full:'Algoritmen rangerer ikke alltid innholdet riktig.',
+   ans:'rangerer ikke alltid',
+   display:'Algoritmen ___ innholdet riktig.',
+   hint:'Main clause: ikke alltid after the verb',
+   theme:'IT'},
+
+  // ---- TRICKY MCQ ----
+  {type:'mcq', rule:'da', q:'Tricky — "Da" starting a main clause (= then). Choose:',
+   opts:['Da oppdaget vi feilen.','Da vi oppdaget feilen.','Da feilen oppdaget vi.'],
+   ans:0, theme:'IT'},
+
+  {type:'mcq', rule:'inversion', q:'Tricky — what happens to "ikke" after inversion?',
+   opts:['I går sendte vi ikke rapporten.','I går sendte ikke vi rapporten.','I går ikke sendte vi rapporten.'],
+   ans:0, theme:'Marketing'},
+
+  {type:'mcq', rule:'combo', q:'Tricky — combine "ikke" + "lenger":',
+   opts:['Plattformen støtter ikke lenger den funksjonen.','Plattformen støtter lenger ikke den funksjonen.','Plattformen ikke støtter lenger den funksjonen.'],
+   ans:0, theme:'Social media'},
+
+  {type:'mcq', rule:'other', q:'Tricky at-clause:',
+   opts:['Hun innrømmer ikke at hun aldri sjekker sikkerhetsinnstillingene.','Hun innrømmer ikke at hun sjekker aldri sikkerhetsinnstillingene.','Hun innrømmer ikke at aldri hun sjekker sikkerhetsinnstillingene.'],
+   ans:0, theme:'Cybersecurity'},
+
+  {type:'mcq', rule:'selvom', q:'Tricky — nested sentence:',
+   opts:['De investerer i annonser, selv om de ikke alltid ser resultater.','De investerer i annonser, selv om de alltid ser ikke resultater.','De investerer i annonser, selv om ikke de alltid ser resultater.'],
+   ans:0, theme:'Marketing'},
+
+  {type:'mcq', rule:'inversion', q:'Which is correct after "Nå"?',
+   opts:['Nå forstår vi ikke alltid hva algoritmen gjør.','Nå vi forstår ikke alltid hva algoritmen gjør.','Nå forstår ikke alltid vi hva algoritmen gjør.'],
+   ans:0, theme:'IT'},
+
+  // ---- MORE MCQ Medium ----
+  {type:'mcq', rule:'main', q:'Which is correct?',
+   opts:['Passordet er ikke sterkt nok.','Passordet ikke er sterkt nok.','Ikke passordet er sterkt nok.'],
+   ans:0, theme:'Cybersecurity'},
+
+  {type:'mcq', rule:'other', q:'Choose:',
+   opts:['…fordi vi ikke alltid tester programvaren grundig.','…fordi vi alltid tester ikke programvaren grundig.','…fordi ikke vi alltid tester programvaren grundig.'],
+   ans:0, theme:'IT'},
+
+  {type:'mcq', rule:'main', q:'Choose correct:',
+   opts:['Følgerne reagerer ikke alltid positivt.','Følgerne ikke reagerer alltid positivt.','Følgerne reagerer alltid ikke positivt.'],
+   ans:0, theme:'Social media'},
+
+  {type:'mcq', rule:'hvis', q:'Which is correct?',
+   opts:['Hvis vi ikke alltid overvåker nettverket, oppdager vi ikke angrep.','Hvis vi alltid ikke overvåker nettverket, oppdager vi ikke angrep.','Hvis ikke vi alltid overvåker nettverket, oppdager vi ikke angrep.'],
+   ans:0, theme:'Cybersecurity'},
+
+  {type:'mcq', rule:'inversion', q:'Start with "Dermed":',
+   opts:['Dermed mistet partiet ikke kontrollen.','Dermed partiet mistet ikke kontrollen.','Dermed ikke mistet partiet kontrollen.'],
+   ans:0, theme:'Politics'},
+
+  {type:'mcq', rule:'da', q:'Choose:',
+   opts:['Da vi ikke alltid hadde tid, brukte vi verktøy.','Da vi alltid ikke hadde tid, brukte vi verktøy.','Da hadde vi ikke alltid tid, brukte vi verktøy.'],
+   ans:0, theme:'Marketing'},
+
+  {type:'mcq', rule:'selvom', q:'Choose:',
+   opts:['Selv om hackerne ikke alltid lykkes, er trusselen reell.','Selv om hackerne alltid ikke lykkes, er trusselen reell.','Selv om ikke hackerne alltid lykkes, er trusselen reell.'],
+   ans:0, theme:'Cybersecurity'},
+
+  {type:'mcq', rule:'main', q:'Which is correct?',
+   opts:['Velgerne stoler ikke alltid på meningsmålingene.','Velgerne ikke stoler alltid på meningsmålingene.','Velgerne stoler alltid ikke på meningsmålingene.'],
+   ans:0, theme:'Politics'},
+
+  {type:'mcq', rule:'other', q:'Choose:',
+   opts:['Jeg ser at reklamen ikke alltid treffer målgruppen.','Jeg ser at reklamen alltid ikke treffer målgruppen.','Jeg ser ikke at reklamen alltid treffer målgruppen.'],
+   ans:0, theme:'Marketing'},
+
+  // ---- MORE REARRANGE tricky ----
+  {type:'rearrange', rule:'da', q:'Tricky da — conjunction (when):',
+   words:['Da','systemet','ikke','lenger','fungerte','mistet','vi','data'], ans:'Da systemet ikke lenger fungerte mistet vi data', theme:'IT'},
+
+  {type:'rearrange', rule:'inversion', q:'Start with "Nå":',
+   words:['Nå','forstår','politikerne','ikke','alltid','situasjonen'], ans:'Nå forstår politikerne ikke alltid situasjonen', theme:'Politics'},
+
+  {type:'rearrange', rule:'other', q:'Rearrange this siden-clause:',
+   words:['siden','appen','ikke','alltid','er','oppdatert'], ans:'siden appen ikke alltid er oppdatert', theme:'IT'},
+
+  {type:'rearrange', rule:'main', q:'Rearrange:',
+   words:['Regjeringen','svarer','ikke','alltid','på','spørsmål'], ans:'Regjeringen svarer ikke alltid på spørsmål', theme:'Politics'},
+
+  {type:'rearrange', rule:'combo', q:'Tricky combo — rearrange:',
+   words:['Vi','deler','ikke','gjerne','private','opplysninger'], ans:'Vi deler ikke gjerne private opplysninger', theme:'Cybersecurity'},
+
+  {type:'rearrange', rule:'hvis', q:'Rearrange full sentence:',
+   words:['Hvis','du','ikke','alltid','bruker','VPN','er','du','sårbar'], ans:'Hvis du ikke alltid bruker VPN er du sårbar', theme:'Cybersecurity'},
+
+  {type:'rearrange', rule:'selvom', q:'Rearrange:',
+   words:['Selv','om','vi','ikke','alltid','liker','kritikk','trenger','vi','den'], ans:'Selv om vi ikke alltid liker kritikk trenger vi den', theme:'Social media'},
+
+  // ---- FINAL TRICKY MCQ ----
+  {type:'mcq', rule:'inversion', q:'Very tricky — start with "Hverken" (neither):',
+   opts:['Hverken reagerer partiet eller mediene på saken.','Hverken partiet eller mediene reagerer på saken.','Hverken reagerer ikke partiet eller mediene.'],
+   ans:1, theme:'Politics'},
+
+  {type:'mcq', rule:'other', q:'Very tricky nested clause:',
+   opts:['Vi ser at kampanjen ikke alltid når de som ikke allerede er overbevist.','Vi ser at kampanjen alltid ikke når de som allerede ikke er overbevist.','Vi ser at ikke kampanjen alltid når de som er ikke allerede overbevist.'],
+   ans:0, theme:'Marketing'},
+
+  {type:'mcq', rule:'da', q:'Very tricky — da as "then" vs "when":',
+   opts:['"Da kom meldingen." — Da = then (adverb, inversion)','"Da meldingen kom." — Da = then (conjunction, no inversion)','"Da kom" can never be correct in Norwegian.'],
+   ans:0, theme:'IT'},
+
+  {type:'mcq', rule:'inversion', q:'Very tricky — "Derfor" sentence with modal verb:',
+   opts:['Derfor kan vi ikke alltid stole på dataene.','Derfor vi kan ikke alltid stole på dataene.','Derfor kan ikke alltid vi stole på dataene.'],
+   ans:0, theme:'IT'},
+
+  {type:'mcq', rule:'combo', q:'Very tricky — which is NOT correct?',
+   opts:['Vi er ikke alltid enige.','Vi er aldri ikke enige.','Vi er ikke gjerne uenige.'],
+   ans:1, theme:'Politics'},
+
+  {type:'mcq', rule:'other', q:'Very tricky — long sentence:',
+   opts:['Selv lederne innrømmer at de ikke alltid forstår hva algoritmen gjør.','Selv lederne innrømmer at de alltid ikke forstår hva algoritmen gjør.','Selv lederne innrømmer ikke alltid at de forstår hva algoritmen gjør.'],
+   ans:0, theme:'IT'},
+
+  {type:'mcq', rule:'main', q:'Very tricky — modal + ikke alltid:',
+   opts:['Systemet kan ikke alltid oppdages av brannmuren.','Systemet ikke kan alltid oppdages av brannmuren.','Systemet kan alltid ikke oppdages av brannmuren.'],
+   ans:0, theme:'Cybersecurity'},
+
+  {type:'mcq', rule:'selvom', q:'Very tricky:',
+   opts:['Selv om tallene ikke alltid er pålitelige, bruker vi dem.','Selv om tallene alltid ikke er pålitelige, bruker vi dem.','Selv om ikke tallene alltid er pålitelige, bruker vi dem.'],
+   ans:0, theme:'Marketing'},
+
+  // more fill
+  {type:'fill', rule:'inversion', q:'Add "ikke alltid" with correct inversion after "Derfor":\n"Derfor ___ vi ___ kontoen."',
+   full:'Derfor sjekker vi ikke alltid kontoen.',
+   ans:'sjekker vi ikke alltid',
+   display:'Derfor ___ kontoen.',
+   hint:'Inversion: V → S → ikke alltid',
+   theme:'Cybersecurity'},
+
+  {type:'fill', rule:'other', q:'Add "aldri" correctly:\n"…at vi ___ deler ___ passordet med noen."',
+   full:'…at vi aldri deler passordet med noen.',
+   ans:'aldri deler',
+   display:'…at vi ___ passordet med noen.',
+   hint:'Subordinate (at-clause): adverb before verb',
+   theme:'Cybersecurity'},
+
+  {type:'fill', rule:'da', q:'Add "ikke lenger" correctly:\n"Da programmet ___ fungerte ___, avinstallerte vi det."',
+   full:'Da programmet ikke lenger fungerte, avinstallerte vi det.',
+   ans:'ikke lenger fungerte',
+   display:'Da programmet ___, avinstallerte vi det.',
+   hint:'Da-clause: ikke lenger before verb',
+   theme:'IT'},
+
+  {type:'fill', rule:'main', q:'Add "heller ikke" correctly:\n"Partiet ___ svarer ___ på spørsmålet."',
+   full:'Partiet svarer heller ikke på spørsmålet.',
+   ans:'svarer heller ikke',
+   display:'Partiet ___ på spørsmålet.',
+   hint:'heller ikke — both come after verb in main clause',
+   theme:'Politics'},
+
+  // more rearrange
+  {type:'rearrange', rule:'main', q:'Rearrange — social media theme:',
+   words:['Kontoen','er','ikke','lenger','aktiv'], ans:'Kontoen er ikke lenger aktiv', theme:'Social media'},
+
+  {type:'rearrange', rule:'other', q:'Rearrange this fordi-clause — tricky:',
+   words:['fordi','systemet','ikke','alltid','er','kompatibelt'], ans:'fordi systemet ikke alltid er kompatibelt', theme:'IT'},
+
+  {type:'rearrange', rule:'inversion', q:'Tricky — start with "Heller ikke":',
+   words:['Heller','ikke','forstår','vi','algoritmen'], ans:'Heller ikke forstår vi algoritmen', theme:'Social media'},
+
+  {type:'rearrange', rule:'main', q:'Rearrange:',
+   words:['Dataene','er','ikke','alltid','anonymisert'], ans:'Dataene er ikke alltid anonymisert', theme:'Cybersecurity'},
+];
+
+// ===== APP STATE =====
+let currentQ = 0;
+let score = { correct: 0, wrong: 0 };
+let shuffledQ = [];
+let selectedWords = [];
+let answered = false;
+
+function shuffle(arr) {
+  let a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const idx = id === 'lesson' ? 0 : 1;
+  document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  if (id === 'quiz' && shuffledQ.length === 0) initQuiz();
+}
+
+function initQuiz() {
+  shuffledQ = shuffle(QUESTIONS);
+  currentQ = 0;
+  score = { correct: 0, wrong: 0 };
+  selectedWords = [];
+  renderQuestion();
+}
+
+function updateProgress() {
+  const total = shuffledQ.length;
+  const pct = (currentQ / total) * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('qCounter').textContent = `Question ${currentQ + 1} of ${total}`;
+  document.getElementById('scoreCorrect').textContent = `✓ ${score.correct}`;
+  document.getElementById('scoreWrong').textContent = `✗ ${score.wrong}`;
+}
+
+function renderQuestion() {
+  if (currentQ >= shuffledQ.length) { showResults(); return; }
+  updateProgress();
+  const q = shuffledQ[currentQ];
+  answered = false;
+  selectedWords = [];
+  const area = document.getElementById('questionArea');
+  const themeBadge = `<span style="font-size:0.7rem;background:var(--surface2);padding:2px 8px;border-radius:10px;color:var(--muted);margin-left:0.5rem;">${q.theme}</span>`;
+
+  if (q.type === 'mcq') renderMCQ(q, area, themeBadge);
+  else if (q.type === 'fill') renderFill(q, area, themeBadge);
+  else if (q.type === 'rearrange') renderRearrange(q, area, themeBadge);
+}
+
+function renderMCQ(q, area, themeBadge) {
+  const shuffledOpts = q.opts.map((o, i) => ({ text: o, origIdx: i }));
+  const correctText = q.opts[q.ans];
+  area.innerHTML = `
+    <div class="question-card">
+      <div class="q-type-badge">MULTIPLE CHOICE ${themeBadge}</div>
+      <div class="q-text">${q.q.replace(/\n/g,'<br>')}</div>
+      <div class="options" id="opts">
+        ${shuffledOpts.map((o, i) => `<button class="option-btn" onclick="checkMCQ(this, ${o.origIdx === q.ans}, '${q.rule}')">${o.text}</button>`).join('')}
+      </div>
+      <div class="feedback" id="feedback"></div>
+      <div style="margin-top:1rem">
+        <button class="next-btn" id="nextBtn" onclick="nextQ()" style="display:none">Next →</button>
+      </div>
+    </div>`;
+}
+
+function checkMCQ(btn, isCorrect, ruleKey) {
+  if (answered) return;
+  answered = true;
+  document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+  if (isCorrect) {
+    btn.classList.add('correct');
+    score.correct++;
+    showFeedback(true, null, null, ruleKey);
+  } else {
+    btn.classList.add('wrong');
+    score.wrong++;
+    // highlight correct
+    document.querySelectorAll('.option-btn').forEach(b => {
+      if (!b.classList.contains('wrong')) b.classList.add('correct');
+    });
+    showFeedback(false, null, null, ruleKey);
+  }
+  document.getElementById('scoreCorrect').textContent = `✓ ${score.correct}`;
+  document.getElementById('scoreWrong').textContent = `✗ ${score.wrong}`;
+  document.getElementById('nextBtn').style.display = 'inline-block';
+}
+
+function renderFill(q, area, themeBadge) {
+  area.innerHTML = `
+    <div class="question-card">
+      <div class="q-type-badge">FILL IN THE BLANK ${themeBadge}</div>
+      <div class="q-text">${q.q.replace(/\n/g,'<br>')}</div>
+      <p style="color:var(--muted);font-size:0.82rem;margin-bottom:0.6rem">Type the missing words (including the verb if shown)</p>
+      <input class="blank-input" id="fillInput" placeholder="Type here…" onkeydown="if(event.key==='Enter')checkFill('${q.rule}')">
+      <div style="margin-top:0.8rem">
+        <button class="submit-btn" onclick="checkFill('${q.rule}')">Check</button>
+        <button class="next-btn" id="nextBtn" onclick="nextQ()" style="display:none">Next →</button>
+      </div>
+      <div class="feedback" id="feedback"></div>
+    </div>`;
+}
+
+function checkFill(ruleKey) {
+  if (answered) return;
+  const q = shuffledQ[currentQ];
+  const input = document.getElementById('fillInput');
+  const val = input.value.trim().toLowerCase();
+  const correct = q.ans.toLowerCase();
+  answered = true;
+  input.disabled = true;
+  if (val === correct || val === correct.replace(/\s+/g,' ')) {
+    input.classList.add('correct');
+    score.correct++;
+    showFeedback(true, q.full, null, ruleKey);
+  } else {
+    input.classList.add('wrong');
+    score.wrong++;
+    showFeedback(false, q.full, q.hint, ruleKey);
+  }
+  document.getElementById('scoreCorrect').textContent = `✓ ${score.correct}`;
+  document.getElementById('scoreWrong').textContent = `✗ ${score.wrong}`;
+  document.getElementById('nextBtn').style.display = 'inline-block';
+}
+
+function renderRearrange(q, area, themeBadge) {
+  const shuffledWords = shuffle(q.words);
+  area.innerHTML = `
+    <div class="question-card">
+      <div class="q-type-badge">REARRANGE ${themeBadge}</div>
+      <div class="q-text">${q.q}</div>
+      <p style="color:var(--muted);font-size:0.82rem;margin-bottom:0.6rem">Tap words to build the sentence:</p>
+      <div class="word-slot" id="slot"></div>
+      <div class="word-pool" id="pool">
+        ${shuffledWords.map((w, i) => `<div class="word-chip" id="chip_${i}" onclick="toggleWord(${i}, '${w}')">${w}</div>`).join('')}
+      </div>
+      <button class="submit-btn" onclick="checkRearrange('${q.rule}')">Check</button>
+      <button class="next-btn" id="nextBtn" onclick="nextQ()" style="display:none">Next →</button>
+      <div class="feedback" id="feedback"></div>
+    </div>`;
+  selectedWords = [];
+}
+
+function toggleWord(idx, word) {
+  const chip = document.getElementById('chip_' + idx);
+  if (chip.classList.contains('placed')) {
+    // remove from selected
+    selectedWords = selectedWords.filter(w => w.idx !== idx);
+    chip.classList.remove('placed');
+  } else {
+    selectedWords.push({ idx, word });
+    chip.classList.add('placed');
+  }
+  // update slot display
+  const slot = document.getElementById('slot');
+  slot.innerHTML = selectedWords.map(w =>
+    `<div class="word-chip placed" style="cursor:default">${w.word}</div>`
+  ).join('');
+}
+
+function checkRearrange(ruleKey) {
+  if (answered) return;
+  const q = shuffledQ[currentQ];
+  const attempt = selectedWords.map(w => w.word).join(' ');
+  answered = true;
+  document.querySelectorAll('.word-chip').forEach(c => c.onclick = null);
+  if (attempt.toLowerCase() === q.ans.toLowerCase()) {
+    score.correct++;
+    document.querySelectorAll('#slot .word-chip').forEach(c => { c.classList.add('correct-chip'); c.classList.remove('placed'); });
+    showFeedback(true, q.ans, null, ruleKey);
+  } else {
+    score.wrong++;
+    document.querySelectorAll('#slot .word-chip').forEach(c => { c.classList.add('wrong-chip'); c.classList.remove('placed'); });
+    showFeedback(false, q.ans, null, ruleKey);
+  }
+  document.getElementById('scoreCorrect').textContent = `✓ ${score.correct}`;
+  document.getElementById('scoreWrong').textContent = `✗ ${score.wrong}`;
+  document.getElementById('nextBtn').style.display = 'inline-block';
+}
+
+function showFeedback(correct, correctAns, hint, ruleKey) {
+  const fb = document.getElementById('feedback');
+  const rule = RULES[ruleKey] || RULES['main'];
+  if (correct) {
+    fb.className = 'feedback correct-fb show';
+    fb.innerHTML = `<strong>✓ Correct!</strong>
+      ${correctAns ? `<span class="correct-ans">${correctAns}</span>` : ''}`;
+  } else {
+    fb.className = 'feedback wrong-fb show';
+    fb.innerHTML = `<strong>✗ Not quite.</strong>
+      ${correctAns ? `<span class="correct-ans">Correct: ${correctAns}</span>` : ''}
+      ${hint ? `<div style="margin-top:0.3rem;color:var(--muted);font-size:0.82rem">Hint: ${hint}</div>` : ''}
+      <div class="lesson-reminder">
+        <div class="reminder-title">📖 Reminder — ${rule.title}</div>
+        <div class="rule-text">${rule.text}</div>
+        <div class="rule-formula">${rule.formula}</div>
+      </div>`;
+  }
+}
+
+function nextQ() {
+  currentQ++;
+  renderQuestion();
+}
+
+function showResults() {
+  const total = shuffledQ.length;
+  const pct = Math.round((score.correct / total) * 100);
+  let emoji = pct >= 90 ? '🏆' : pct >= 70 ? '🎉' : pct >= 50 ? '💪' : '📖';
+  let msg = pct >= 90 ? 'Excellent! You know Norwegian word order!' : pct >= 70 ? 'Great job! A bit more practice and you\'ll be perfect.' : pct >= 50 ? 'Good effort! Review the lesson cards and try again.' : 'Keep studying the lesson — you\'ll get there!';
+  document.getElementById('questionArea').innerHTML = `
+    <div class="results-page">
+      <h1>${emoji} Finished!</h1>
+      <div class="big-score" style="color:${pct>=70?'var(--green)':pct>=50?'var(--gold)':'var(--red)'}">${pct}%</div>
+      <p style="color:var(--muted);margin-bottom:1rem">${msg}</p>
+      <div class="score-breakdown">
+        <span class="score-correct">✓ ${score.correct} correct</span>
+        <span class="score-wrong">✗ ${score.wrong} wrong</span>
+        <span style="color:var(--muted)">${total} questions</span>
+      </div>
+      <button class="retry-btn" onclick="initQuiz()">🔄 Try Again</button>
+      <button class="retry-btn" style="background:var(--surface2);color:var(--text);border:1px solid var(--border);margin-left:0.8rem" onclick="showPage('lesson')">📖 Review Lesson</button>
+    </div>`;
+  document.getElementById('progressBar').style.width = '100%';
+}
+</script>
+</body>
+</html>
